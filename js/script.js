@@ -2,17 +2,23 @@ const addHabitButton = document.getElementById('add-habit-button');
 const noHabitsMessage = document.getElementById('noHabitsMessage');
 const clearLocalStorage = document.getElementById('clear-local-storage');
 const habitsList = document.getElementById('habitsList');
+const habitInput = document.getElementById('habitInput');
 
 function addHabitToLocalStorage(habit) {
-    let oldHabits = localStorage.getItem('habits')
-    if (oldHabits == null) {
-        localStorage.setItem('habits', JSON.stringify([habit]))
+    if (habitInput.value.length > 0) {
+        let oldHabits = localStorage.getItem('habits')
+        if (oldHabits == null) {
+            localStorage.setItem('habits', JSON.stringify([habit]))
+        } else {
+            oldHabits = JSON.parse(oldHabits)
+            oldHabits.push(habit)
+            localStorage.setItem('habits', JSON.stringify(oldHabits))
+        }
+        checkHabits();
     } else {
-        oldHabits = JSON.parse(oldHabits)
-        oldHabits.push(habit)
-        localStorage.setItem('habits', JSON.stringify(oldHabits))
+        console.log('No input found')
     }
-    checkHabits();
+
 }
 
 function checkHabits() {
@@ -38,10 +44,19 @@ function checkHabits() {
 
 checkHabits()
 
+habitInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        console.log('enter from user input');
+        addHabitToLocalStorage(habitInput.value);
+        habitInput.value = '';
+    }
+
+})
+
 addHabitButton.addEventListener('click', () => {
     console.log('add habit button clicked');
-    const habitInput = document.getElementById('habitInput');
     addHabitToLocalStorage(habitInput.value);
+    habitInput.value = '';
 });
 
 clearLocalStorage.addEventListener('click', () => {
@@ -52,6 +67,3 @@ clearLocalStorage.addEventListener('click', () => {
 
 
 
-// Check if there are any habits in the list. 
-// if there are no habits, show the no habits message.
-// if there is a habit, show the habit list.
