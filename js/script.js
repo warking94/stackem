@@ -1,5 +1,6 @@
 const addHabitButton = document.getElementById('add-habit-button');
 const noHabitsMessage = document.getElementById('noHabitsMessage');
+const clearLocalStorage = document.getElementById('clear-local-storage');
 
 function addHabitToLocalStorage(habit) {
     localStorage.setItem('habits', JSON.stringify(habit));
@@ -25,6 +26,11 @@ addHabitButton.addEventListener('click', () => {
     }
 });
 
+clearLocalStorage.addEventListener('click', () => {
+    localStorage.clear();
+    console.log('local storage cleared');
+    checkHabits();
+})
 
 
 
