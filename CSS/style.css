@@ -1,5 +1,6 @@
 body {
     min-height: 100vh;
+    max-width: 90vw;
     margin: 0;
     display: grid;
     place-items: center;
@@ -16,12 +17,26 @@ main {
 #habitsList {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
     list-style: none;
-    padding: 0;
 }
 
 .habitListItem {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    width: 50vw;
+    max-width: 300px;
+}
+
+.habitListbuttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#habitsList li {
+    margin-bottom: 20px;  /* Old-school way to add spacing */
 }
