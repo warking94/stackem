@@ -35,7 +35,16 @@ function checkHabits() {
         habitsList.innerHTML = '';
         habits.forEach(habit => {
             const li = document.createElement('li');
-            li.textContent = habit;
+            const habitName = document.createElement('div');
+            const yesButton = document.createElement('button');
+            const noButton = document.createElement('button');
+            li.className = 'habitListItem';
+            habitName.textContent = habit;
+            yesButton.textContent = 'yes';
+            noButton.textContent = 'no';
+            li.appendChild(habitName);
+            li.appendChild(yesButton);
+            li.appendChild(noButton);
             habitsList.appendChild(li)
         })
         habitsList.style.display = 'block';

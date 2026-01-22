@@ -12,3 +12,16 @@ main {
     justify-content: center;
     gap: 20px;
 }
+
+#habitsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.habitListItem {
+    display: flex;
+    flex-direction: row;
+}
