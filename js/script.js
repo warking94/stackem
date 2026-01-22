@@ -3,6 +3,8 @@ const noHabitsMessage = document.getElementById('noHabitsMessage');
 const clearLocalStorage = document.getElementById('clear-local-storage');
 const habitsList = document.getElementById('habitsList');
 const habitInput = document.getElementById('habitInput');
+const d = new Date();
+
 
 function addHabitToLocalStorage(habit) {
     if (habitInput.value.length > 0) {
@@ -36,15 +38,20 @@ function checkHabits() {
         habits.forEach(habit => {
             const li = document.createElement('li');
             const habitName = document.createElement('div');
+            const habitButtons = document.createElement('div')
             const yesButton = document.createElement('button');
             const noButton = document.createElement('button');
             li.className = 'habitListItem';
+            habitButtons.className = 'habitListbuttons';
             habitName.textContent = habit;
             yesButton.textContent = 'yes';
+            yesButton.id = habit.replace(/\s+/g, '_') + '_yes'
             noButton.textContent = 'no';
+            noButton.id = habit.replace(/\s+/g, '_') + '_no'
+            habitButtons.appendChild(yesButton);
+            habitButtons.appendChild(noButton);
             li.appendChild(habitName);
-            li.appendChild(yesButton);
-            li.appendChild(noButton);
+            li.appendChild(habitButtons);
             habitsList.appendChild(li)
         })
         habitsList.style.display = 'block';
@@ -74,5 +81,13 @@ clearLocalStorage.addEventListener('click', () => {
     checkHabits();
 })
 
+habitsList.addEventListener('click', event => {
+    if (event.target.tagName === 'BUTTON') {
+        console.log(event.target.id)
+    }
+})
 
-
+console.log('----------------------')
+console.log('DATE: ' + d.getDate())
+console.log('MONTH: ' + d.getMonth())
+console.log('YEAR: ' + d.getFullYear())
