@@ -5,13 +5,8 @@ const habitsList = document.getElementById('habitsList');
 const habitInput = document.getElementById('habitInput');
 
 
-
-
-
-
-
 function addHabitToLocalStorage(habit) {
-    if (habitInput.value.length > 0) {
+    if (habit.length > 0) {
         let oldHabits = localStorage.getItem('habits')
         if (oldHabits == null) {
             localStorage.setItem('habits', JSON.stringify([habit]))
@@ -45,23 +40,57 @@ function checkHabits() {
             const habitButtons = document.createElement('div')
             const yesButton = document.createElement('button');
             const noButton = document.createElement('button');
+            const streak = document.createElement('p');
             li.className = 'habitListItem';
             habitButtons.className = 'habitListbuttons';
             habitName.textContent = habit;
             habitName.className = 'habit-name'
             yesButton.textContent = 'yes';
-            yesButton.id = habit.replace(/\s+/g, '_') + '_yes'
+            yesButton.id = habit.replace(/\s+/g, '_') + '_yes';
             noButton.textContent = 'no';
-            noButton.id = habit.replace(/\s+/g, '_') + '_no'
+            noButton.id = habit.replace(/\s+/g, '_') + '_no';
+
+            streak.textContent = 'Curent Streak: 0';
+            streak.id = habit + '_streak'
+
             habitButtons.appendChild(yesButton);
             habitButtons.appendChild(noButton);
+            
             li.appendChild(habitName);
             li.appendChild(habitButtons);
+            li.appendChild(streak)
             habitsList.appendChild(li)
         })
         habitsList.style.display = 'block';
     }
 };
+
+
+function countStreak(habitHistory) {
+    // const habitHisory = JSON.parse(localStorage.getItem(habitName + '_history') || '[]');
+
+    // for habit in habit list get habit history.
+    // count from the end of the history backwards how many yes we have
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        console.log(key, value);
+    }
+
+    let streak = 0;
+    for (let i = habitHistory.length -1; i>= 0; i--) {
+        if (habitHistory[i].completed === 'yes') {
+            streak++;
+        } else { 
+            break
+        }
+    }
+
+    return streak;
+
+}
+
 
 checkHabits()
 
@@ -88,11 +117,11 @@ clearLocalStorageButton.addEventListener('click', () => {
 
 habitsList.addEventListener('click', event => {
     if (event.target.tagName === 'BUTTON') {
-        const d = new Date();
-        const today = d.toISOString().split('T')[0];
-        const li = event.target.closest('.habitListItem');
+        const li = event.target.closest('.habitListItem')
         const habitName = li.querySelector('.habit-name').textContent;
 
+        const d = new Date();
+        const today = d.toISOString().split('T');
 
         const habitHisory = JSON.parse(localStorage.getItem(habitName + '_history') || '[]');
         const dateExists = habitHisory.some(item => item.date === today);
@@ -108,7 +137,14 @@ habitsList.addEventListener('click', event => {
 
         console.log(localStorage.getItem(habitName + '_history'));
         console.log(JSON.parse(localStorage.getItem(habitName + '_history')));
+
+        countStreak(habitHisory)
+        console.log(countStreak(habitHisory))
+
+        const streakCounter = document.getElementById(habitName + '_streak')
+        streakCounter.textContent = 'Current Streak: ' + countStreak(habitHisory)
     }
+
 })
 
 
