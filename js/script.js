@@ -3,7 +3,7 @@ const noHabitsMessage = document.getElementById('noHabitsMessage');
 const clearLocalStorageButton = document.getElementById('clear-local-storage');
 const habitsList = document.getElementById('habitsList');
 const habitInput = document.getElementById('habitInput');
-const d = new Date();
+
 
 
 
@@ -88,35 +88,27 @@ clearLocalStorageButton.addEventListener('click', () => {
 
 habitsList.addEventListener('click', event => {
     if (event.target.tagName === 'BUTTON') {
-        console.log(event.target);
-        console.log('button id: ' + event.target.id);
+        const d = new Date();
+        const today = d.toISOString().split('T')[0];
         const li = event.target.closest('.habitListItem');
         const habitName = li.querySelector('.habit-name').textContent;
-        console.log('Habit name is: ' + habitName);
-
-        // if (localStorage.getItem(habitName + '_record') == null) {
-        //     localStorage.setItem(habitName + '_record', d.getDate());
-        //     console.log('local storage for record set')
-        // } else {
-        //     const record = localStorage.getItem(habitName + '_record');
-        //     parsedRecord = JSON.parse(record);
-        //     parsedRecord.push(d.getDate())
-        //     localStorage.setItem(habitName + '_record', JSON.stringify(record))
-        //     console.log('New record shows:  ' + localStorage.getItem(habitName + '_record'))
-
-        // }
 
 
         const habitHisory = JSON.parse(localStorage.getItem(habitName + '_history') || '[]');
-        habitHisory.push({ date: d.getDate(), completed: event.target.textContent})
-        localStorage.setItem(habitName + '_history', JSON.stringify(habitHisory))
-        console.log(localStorage.getItem(habitName + '_history'))
-        console.log(JSON.parse(localStorage.getItem(habitName + '_history')))
+        const dateExists = habitHisory.some(item => item.date === today);
+
+        if (dateExists) {
+            habitHisory.pop();
+            habitHisory.push({ date: today, completed: event.target.textContent});
+        } else {
+            habitHisory.push({ date: today, completed: event.target.textContent});
+        }
+
+        localStorage.setItem(habitName + '_history', JSON.stringify(habitHisory));
+
+        console.log(localStorage.getItem(habitName + '_history'));
+        console.log(JSON.parse(localStorage.getItem(habitName + '_history')));
     }
 })
 
 
-console.log('----------------------')
-console.log('DATE: ' + d.getDate())
-console.log('MONTH: ' + d.getMonth())
-console.log('YEAR: ' + d.getFullYear())
